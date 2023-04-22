@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "types": ["@types/node"],
+        "noEmit": true,
+        "allowJs": true
+    },
+    "extends": "./tsconfig.json",
+    "files": [
+        "tailwind.config.js",
+        "postcss.config.js",
+        "vite.config.ts",
+        ".eslintrc.cjs"
+    ]
+}
