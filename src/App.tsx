@@ -1,10 +1,13 @@
 import './App.css';
+import { WordsContainer } from './components/WordsContainer';
 
 function App() {
 	return (
-		<>
-			<h1>Hola mundo</h1>
-		</>
+		<div>
+			<main className="flex justify-center items-center relative">
+				<WordsContainer />
+			</main>
+		</div>
 	);
 }
 
