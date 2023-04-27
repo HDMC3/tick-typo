@@ -31,6 +31,18 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
                     letters: testLetters
                 }
             })
+        },
+        checkLetter: (typedChar: string) => {
+            set(state => {
+                const { letterIdx, text, letters } = state;
+                const letter = letters[letterIdx];
+                letter.correct = letter.char === typedChar;
+                return {
+                    ...state,
+                    letters: state.letters,
+                    letterIdx: letterIdx + 1
+                }
+            })
         }
     }
 })

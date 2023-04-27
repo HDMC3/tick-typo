@@ -6,4 +6,5 @@ export interface TypingTestState {
     words: TestLetter[][]
     letters: TestLetter[];
     setText: (text: string) => void;
+    checkLetter: (typedChar: string) => void;
 }
