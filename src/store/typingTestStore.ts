@@ -1,24 +1,32 @@
 import { create } from "zustand";
 import { type TypingTestState, type TestLetter } from "./types";
+import { VOWEL_TO_ACCENT } from "../helpers/constants";
 
 export const useTypingTestStore = create<TypingTestState>((set) => {
     return {
         text: '',
         letterIdx: 0,
+        accentPressed: false,
         letters: [],
         words: [],
         setText: (text: string) => {
             const testLetters: TestLetter[] = text.split('').map(char => {
                 return {
                     char, 
-                    correct: false
+                    correct: false,
+                    evaluated: false,
+                    active: false
                 }
             });
 
             let idx = 0;
-            const testWords = text.split(' ').map(word => {
+            const rawWords = text.split(' ');
+            const testWords = rawWords.map((word, i) => {
                 const end = idx + word.length;
                 const testWord = testLetters.slice(idx, end);
+                if (i < rawWords.length - 1) {
+                    testWord.push(testLetters[end])
+                }
                 idx = end + 1;
                 return testWord;
             })
@@ -34,13 +42,28 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
         },
         checkLetter: (typedChar: string) => {
             set(state => {
-                const { letterIdx, text, letters } = state;
+                const { letterIdx, letters, accentPressed } = state;
                 const letter = letters[letterIdx];
+                
+                if (accentPressed) {
+                    typedChar = VOWEL_TO_ACCENT[typedChar];
+                }
+                
                 letter.correct = letter.char === typedChar;
+                letter.evaluated = true;
                 return {
                     ...state,
                     letters: state.letters,
-                    letterIdx: letterIdx + 1
+                    letterIdx: letterIdx + 1,
+                    accentPressed: false
+                }
+            })
+        },
+        markAccent: () => {
+            set(state => {
+                return {
+                    ...state,
+                    accentPressed: true
                 }
             })
         }

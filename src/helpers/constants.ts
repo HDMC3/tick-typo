@@ -29,5 +29,6 @@ export const INVALID_KEYS = [
 	'CapsLock',
 	'Meta',
 	'Tab',
-	'Dead',
 ];
+
+export const VOWEL_TO_ACCENT: Record<string, string> = { 'a': 'á', 'e': 'é', 'i': 'í', 'o': 'ó', 'u': 'ú', 'ü': 'u', 'A': 'Á', 'E': 'É', 'I': 'Í', 'O': 'Ó', 'U': 'Ú', 'Ü': 'U' }

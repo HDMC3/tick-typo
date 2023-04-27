@@ -11,7 +11,6 @@ export const Word = ({ testLetters }: Props) => {
 			{testLetters.map((testLetter, i) => (
 				<Letter key={i} testLetter={testLetter} />
 			))}
-			<Letter testLetter={{ char: ' ', correct: true }} />
 		</div>
 	);
 };
