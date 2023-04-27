@@ -1,0 +1,11 @@
+.animate-cursor {
+    position: relative;
+    background-color: rgb(var(--slate-12));
+    animation: blink 1s ease-in-out infinite;
+}
+
+@keyframes blink {
+    100% {
+        background-color: transparent;
+    }
+}

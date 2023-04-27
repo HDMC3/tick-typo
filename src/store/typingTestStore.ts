@@ -10,12 +10,12 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
         letters: [],
         words: [],
         setText: (text: string) => {
-            const testLetters: TestLetter[] = text.split('').map(char => {
+            const testLetters: TestLetter[] = text.split('').map((char, i) => {
                 return {
                     char, 
                     correct: false,
                     evaluated: false,
-                    active: false
+                    active: i === 0
                 }
             });
 
@@ -48,9 +48,11 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
                 if (accentPressed) {
                     typedChar = VOWEL_TO_ACCENT[typedChar];
                 }
-                
+
                 letter.correct = letter.char === typedChar;
                 letter.evaluated = true;
+                letter.active = false;
+                letters[letterIdx + 1].active = true;
                 return {
                     ...state,
                     letters: state.letters,
