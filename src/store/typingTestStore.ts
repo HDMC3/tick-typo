@@ -42,7 +42,8 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
         },
         checkLetter: (typedChar: string) => {
             set(state => {
-                const { letterIdx, letters, accentPressed } = state;
+                const { letterIdx, letters, accentPressed, text } = state;
+                if (letterIdx >= text.length) return state;
                 const letter = letters[letterIdx];
                 
                 if (accentPressed) {
@@ -52,7 +53,7 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
                 letter.correct = letter.char === typedChar;
                 letter.evaluated = true;
                 letter.active = false;
-                letters[letterIdx + 1].active = true;
+                if (letterIdx < text.length - 1) letters[letterIdx + 1].active = true;
                 return {
                     ...state,
                     letters: state.letters,
