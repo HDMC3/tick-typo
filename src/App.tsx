@@ -5,7 +5,8 @@ import { INVALID_KEYS } from './helpers/constants';
 import './App.css';
 
 function App() {
-	const { setText, checkLetter, markAccent } = useTypingTestStore();
+	const { setText, checkLetter, markAccent, deleteLetter } =
+		useTypingTestStore();
 	useEffect(() => {
 		setText(
 			[
@@ -27,10 +28,17 @@ function App() {
 	useEffect(() => {
 		const handleKeyUp = (event: KeyboardEvent) => {
 			if (INVALID_KEYS.includes(event.key)) return;
+
+			if (event.key === 'Backspace') {
+				deleteLetter();
+				return;
+			}
+
 			if (event.key === 'Dead') {
 				markAccent();
 				return;
 			}
+
 			checkLetter(event.key);
 		};
 

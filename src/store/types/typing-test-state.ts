@@ -8,5 +8,6 @@ export interface TypingTestState {
     letters: TestLetter[];
     setText: (text: string) => void;
     checkLetter: (typedChar: string) => void;
+    deleteLetter: () => void;
     markAccent: () => void;
 }

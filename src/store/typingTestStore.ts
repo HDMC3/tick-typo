@@ -44,22 +44,44 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
             set(state => {
                 const { letterIdx, letters, accentPressed, text } = state;
                 if (letterIdx >= text.length) return state;
-                const letter = letters[letterIdx];
+                const currentLetter = letters[letterIdx];
                 
                 if (accentPressed) {
                     typedChar = VOWEL_TO_ACCENT[typedChar];
                 }
 
-                letter.correct = letter.char === typedChar;
-                letter.evaluated = true;
-                letter.active = false;
-                if (letterIdx < text.length - 1) letters[letterIdx + 1].active = true;
+                currentLetter.correct = currentLetter.char === typedChar;
+                currentLetter.evaluated = true;
+                currentLetter.active = false;
+
+                const newLetterIdx = letterIdx + 1;
+
+                if (newLetterIdx <= text.length - 1) letters[newLetterIdx].active = true;
                 return {
                     ...state,
                     letters: state.letters,
-                    letterIdx: letterIdx + 1,
+                    letterIdx: newLetterIdx,
                     accentPressed: false
                 }
+            })
+        },
+        deleteLetter: () => {
+            set(state => {
+                const { letterIdx, letters, text } = state;
+                if (letterIdx === 0 || letterIdx >= text.length) return state;
+
+                const currentLetter = letters[letterIdx];
+                currentLetter.active = false;
+
+                const newLetterIdx = letterIdx - 1;
+
+                letters[newLetterIdx].active = true;
+                letters[newLetterIdx].evaluated = false;
+                return {
+                    ...state,
+                    letterIdx: newLetterIdx,
+                    accentPressed: false
+                };
             })
         },
         markAccent: () => {
