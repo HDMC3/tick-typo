@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { type TypingTestState, type TestLetter } from "./types";
 import { VOWEL_TO_ACCENT } from "../helpers/constants";
+import { TestType, TestTypeOption } from "./enums";
 
 export const useTypingTestStore = create<TypingTestState>((set) => {
     return {
@@ -9,6 +10,8 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
         accentPressed: false,
         letters: [],
         words: [],
+        testType: TestType.WORDS,
+        testTypeOption: TestTypeOption.WORDS_25,
         setText: (text: string) => {
             const testLetters: TestLetter[] = text.split('').map((char, i) => {
                 return {
@@ -91,6 +94,29 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
                     accentPressed: true
                 }
             })
+        },
+        setTestType: (newTestType: TestType) => {
+            const defaultOptions = {
+                [TestType.WORDS]: TestTypeOption.WORDS_25,
+                [TestType.TEXT]: TestTypeOption.TEXT_SHORT,
+                [TestType.TIME]: TestTypeOption.TIME_30,
+            }
+            set(state => {
+                if (state.testType === newTestType) return state;
+                return {
+                    ...state,
+                    testType: newTestType,
+                    testTypeOption: defaultOptions[newTestType]
+                }
+            });
+        },
+        setTestTypeOption: (newTesTypeOption: TestTypeOption) => {
+            set(state => {
+                return {
+                    ...state,
+                    testTypeOption: newTesTypeOption
+                }
+            });
         }
     }
 })
