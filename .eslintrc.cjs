@@ -24,5 +24,6 @@ module.exports = {
 		'react-refresh/only-export-components': 'warn',
 		'react-hooks/exhaustive-deps': 'off',
 		'@typescript-eslint/explicit-function-return-type': 'off',
+		'@typescript-eslint/no-confusing-void-expression': 'off',
 	},
 };

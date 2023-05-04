@@ -3,6 +3,7 @@ import { WordsContainer } from './components/WordsContainer';
 import { useTypingTestStore } from './store/typingTestStore';
 import { INVALID_KEYS } from './helpers/constants';
 import './App.css';
+import { OptionsBar } from './components/OptionsBar';
 
 function App() {
 	const { setText, checkLetter, markAccent, deleteLetter } =
@@ -51,7 +52,8 @@ function App() {
 
 	return (
 		<div>
-			<main className="flex justify-center items-center relative">
+			<main className="flex flex-col gap-6 py-7 justify-center items-center relative">
+				<OptionsBar />
 				<WordsContainer />
 			</main>
 		</div>
