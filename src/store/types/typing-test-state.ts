@@ -1,4 +1,4 @@
-import { type TestType, type TestTypeOption } from "../enums";
+import { type TestMode, type TestModeOption } from "../enums";
 import { type TestLetter } from "./test-letter";
 
 export interface TypingTestState {
@@ -7,12 +7,12 @@ export interface TypingTestState {
     accentPressed: boolean;
     words: TestLetter[][]
     letters: TestLetter[];
-    testType: TestType;
-    testTypeOption: TestTypeOption;
+    testMode: TestMode;
+    testModeOption: TestModeOption;
     setText: (text: string) => void;
     checkLetter: (typedChar: string) => void;
     deleteLetter: () => void;
     markAccent: () => void;
-    setTestType: (testType: TestType) => void;
-    setTestTypeOption: (testTypeOption: TestTypeOption) => void;
+    setTestMode: (testMode: TestMode) => void;
+    setTestModeOption: (testModeOption: TestModeOption) => void;
 }

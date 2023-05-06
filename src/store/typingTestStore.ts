@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { type TypingTestState, type TestLetter } from "./types";
 import { VOWEL_TO_ACCENT } from "../helpers/constants";
-import { TestType, TestTypeOption } from "./enums";
+import { TestMode, TestModeOption } from "./enums";
 
 export const useTypingTestStore = create<TypingTestState>((set) => {
     return {
@@ -10,8 +10,8 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
         accentPressed: false,
         letters: [],
         words: [],
-        testType: TestType.WORDS,
-        testTypeOption: TestTypeOption.WORDS_25,
+        testMode: TestMode.WORDS,
+        testModeOption: TestModeOption.WORDS_25,
         setText: (text: string) => {
             const testLetters: TestLetter[] = text.split('').map((char, i) => {
                 return {
@@ -95,26 +95,26 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
                 }
             })
         },
-        setTestType: (newTestType: TestType) => {
+        setTestMode: (newTestMode: TestMode) => {
             const defaultOptions = {
-                [TestType.WORDS]: TestTypeOption.WORDS_25,
-                [TestType.TEXT]: TestTypeOption.TEXT_SHORT,
-                [TestType.TIME]: TestTypeOption.TIME_30,
+                [TestMode.WORDS]: TestModeOption.WORDS_25,
+                [TestMode.TEXT]: TestModeOption.TEXT_SHORT,
+                [TestMode.TIME]: TestModeOption.TIME_30,
             }
             set(state => {
-                if (state.testType === newTestType) return state;
+                if (state.testMode === newTestMode) return state;
                 return {
                     ...state,
-                    testType: newTestType,
-                    testTypeOption: defaultOptions[newTestType]
+                    testMode: newTestMode,
+                    testModeOption: defaultOptions[newTestMode]
                 }
             });
         },
-        setTestTypeOption: (newTesTypeOption: TestTypeOption) => {
+        setTestModeOption: (newTestModeOption: TestModeOption) => {
             set(state => {
                 return {
                     ...state,
-                    testTypeOption: newTesTypeOption
+                    testModeOption: newTestModeOption
                 }
             });
         }

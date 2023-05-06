@@ -1,10 +1,10 @@
-export enum TestType {
+export enum TestMode {
     WORDS,
     TEXT,
     TIME
 }
 
-export enum TestTypeOption {
+export enum TestModeOption {
     WORDS_25,
     WORDS_50,
     WORDS_100,

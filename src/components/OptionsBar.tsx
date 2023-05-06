@@ -1,17 +1,17 @@
-import { TestType, TestTypeOption } from '../store/enums';
+import { TestMode, TestModeOption } from '../store/enums';
 import { useTypingTestStore } from '../store/typingTestStore';
 
-interface TestTypeButtonProps {
-	type: TestType;
+interface TestModeButtonProps {
+	mode: TestMode;
 	text: string;
 }
-const TestTypeButton = ({ type, text }: TestTypeButtonProps) => {
-	const { testType, setTestType } = useTypingTestStore();
+const TestModeButton = ({ mode, text }: TestModeButtonProps) => {
+	const { testMode, setTestMode } = useTypingTestStore();
 	return (
 		<button
-			onClick={() => setTestType(type)}
+			onClick={() => setTestMode(mode)}
 			className={`btn btn-sm btn-solid-success ${
-				testType === type ? 'underline font-bold' : ''
+				testMode === mode ? 'underline font-bold' : ''
 			}`}
 		>
 			{text}
@@ -19,17 +19,17 @@ const TestTypeButton = ({ type, text }: TestTypeButtonProps) => {
 	);
 };
 
-interface TestTypeOptionButtonProps {
-	type: TestTypeOption;
+interface TestModeOptionButtonProps {
+	mode: TestModeOption;
 	text: string;
 }
-const TestTypeOptionButton = ({ type, text }: TestTypeOptionButtonProps) => {
-	const { testTypeOption, setTestTypeOption } = useTypingTestStore();
+const TestModeOptionButton = ({ mode, text }: TestModeOptionButtonProps) => {
+	const { testModeOption, setTestModeOption } = useTypingTestStore();
 	return (
 		<button
-			onClick={() => setTestTypeOption(type)}
+			onClick={() => setTestModeOption(mode)}
 			className={`btn btn-sm btn-solid-warning ${
-				testTypeOption === type ? 'underline font-bold' : ''
+				testModeOption === mode ? 'underline font-bold' : ''
 			}`}
 		>
 			{text}
@@ -38,14 +38,14 @@ const TestTypeOptionButton = ({ type, text }: TestTypeOptionButtonProps) => {
 };
 
 export const OptionsBar = () => {
-	const { testType } = useTypingTestStore();
+	const { testMode } = useTypingTestStore();
 
 	return (
 		<div className="flex flex-wrap justify-center p-3 gap-1 bg-backgroundSecondary rounded-xl">
 			<div className="flex gap-2">
-				<TestTypeButton type={TestType.WORDS} text="Palabras" />
-				<TestTypeButton type={TestType.TEXT} text="Texto" />
-				<TestTypeButton type={TestType.TIME} text="Tiempo" />
+				<TestModeButton mode={TestMode.WORDS} text="Palabras" />
+				<TestModeButton mode={TestMode.TEXT} text="Texto" />
+				<TestModeButton mode={TestMode.TIME} text="Tiempo" />
 			</div>
 
 			<div className="divider divider-vertical h-8"></div>
@@ -53,60 +53,60 @@ export const OptionsBar = () => {
 			<div
 				id="text-options"
 				className={`gap-2 ${
-					testType === TestType.WORDS ? 'flex' : 'hidden'
+					testMode === TestMode.WORDS ? 'flex' : 'hidden'
 				}`}
 			>
-				<TestTypeOptionButton
+				<TestModeOptionButton
 					text="25p"
-					type={TestTypeOption.WORDS_25}
+					mode={TestModeOption.WORDS_25}
 				/>
-				<TestTypeOptionButton
+				<TestModeOptionButton
 					text="50p"
-					type={TestTypeOption.WORDS_50}
+					mode={TestModeOption.WORDS_50}
 				/>
-				<TestTypeOptionButton
+				<TestModeOptionButton
 					text="100p"
-					type={TestTypeOption.WORDS_100}
+					mode={TestModeOption.WORDS_100}
 				/>
 			</div>
 
 			<div
 				id="words-options"
 				className={`gap-2 ${
-					testType === TestType.TEXT ? 'flex' : 'hidden'
+					testMode === TestMode.TEXT ? 'flex' : 'hidden'
 				}`}
 			>
-				<TestTypeOptionButton
+				<TestModeOptionButton
 					text="Corto"
-					type={TestTypeOption.TEXT_SHORT}
+					mode={TestModeOption.TEXT_SHORT}
 				/>
-				<TestTypeOptionButton
+				<TestModeOptionButton
 					text="Medio"
-					type={TestTypeOption.TEXT_MEDIUM}
+					mode={TestModeOption.TEXT_MEDIUM}
 				/>
-				<TestTypeOptionButton
+				<TestModeOptionButton
 					text="Largo"
-					type={TestTypeOption.TEXT_LONG}
+					mode={TestModeOption.TEXT_LONG}
 				/>
 			</div>
 
 			<div
 				id="time-options"
 				className={`gap-2 ${
-					testType === TestType.TIME ? 'flex' : 'hidden'
+					testMode === TestMode.TIME ? 'flex' : 'hidden'
 				}`}
 			>
-				<TestTypeOptionButton
+				<TestModeOptionButton
 					text="30s"
-					type={TestTypeOption.TIME_30}
+					mode={TestModeOption.TIME_30}
 				/>
-				<TestTypeOptionButton
+				<TestModeOptionButton
 					text="60s"
-					type={TestTypeOption.TIME_60}
+					mode={TestModeOption.TIME_60}
 				/>
-				<TestTypeOptionButton
+				<TestModeOptionButton
 					text="120s"
-					type={TestTypeOption.TIME_120}
+					mode={TestModeOption.TIME_120}
 				/>
 			</div>
 		</div>
