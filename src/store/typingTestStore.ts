@@ -5,14 +5,14 @@ import { TestMode, TestModeOption } from "./enums";
 
 export const useTypingTestStore = create<TypingTestState>((set) => {
     return {
-        text: '',
+        testText: '',
         letterIdx: 0,
         accentPressed: false,
         letters: [],
         words: [],
         testMode: TestMode.WORDS,
         testModeOption: TestModeOption.WORDS_25,
-        setText: (text: string) => {
+        setTestText: (text: string) => {
             const testLetters: TestLetter[] = text.split('').map((char, i) => {
                 return {
                     char, 
@@ -37,7 +37,7 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
             set(state => {
                 return {
                     ...state,
-                    text,
+                    testText: text,
                     words: testWords,
                     letters: testLetters
                 }
@@ -45,8 +45,8 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
         },
         checkLetter: (typedChar: string) => {
             set(state => {
-                const { letterIdx, letters, accentPressed, text } = state;
-                if (letterIdx >= text.length) return state;
+                const { letterIdx, letters, accentPressed, testText } = state;
+                if (letterIdx >= testText.length) return state;
                 const currentLetter = letters[letterIdx];
                 
                 if (accentPressed) {
@@ -59,7 +59,7 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
 
                 const newLetterIdx = letterIdx + 1;
 
-                if (newLetterIdx <= text.length - 1) letters[newLetterIdx].active = true;
+                if (newLetterIdx <= testText.length - 1) letters[newLetterIdx].active = true;
                 return {
                     ...state,
                     letters: state.letters,
@@ -70,8 +70,8 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
         },
         deleteLetter: () => {
             set(state => {
-                const { letterIdx, letters, text } = state;
-                if (letterIdx === 0 || letterIdx >= text.length) return state;
+                const { letterIdx, letters, testText } = state;
+                if (letterIdx === 0 || letterIdx >= testText.length) return state;
 
                 const currentLetter = letters[letterIdx];
                 currentLetter.active = false;

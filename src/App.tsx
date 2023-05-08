@@ -4,27 +4,16 @@ import { useTypingTestStore } from './store/typingTestStore';
 import { INVALID_KEYS } from './helpers/constants';
 import './App.css';
 import { OptionsBar } from './components/OptionsBar';
+import { useTestTextData } from './hooks/useWords';
 
 function App() {
-	const { setText, checkLetter, markAccent, deleteLetter } =
+	const { setTestText, checkLetter, markAccent, deleteLetter } =
 		useTypingTestStore();
+	const { textData } = useTestTextData();
+
 	useEffect(() => {
-		setText(
-			[
-				'El cielo está despejado y el sol brilla intensamente.',
-				'Los pájaros cantan alegremente en los árboles.',
-				'El aroma del café recién hecho me despierta por las mañanas.',
-				'La lluvia cae suavemente sobre el techo de mi casa.',
-				'Los niños juegan en el parque y se divierten mucho.',
-				'El olor de las flores en el jardín es embriagador.',
-				'El viento sopla fuerte y hace que las hojas se muevan en el suelo.',
-				'La nieve cubre todo el paisaje y crea un ambiente mágico.',
-				'El fuego crepita en la chimenea, brindando calor y comodidad.',
-				'El perfume de mi perfume favorito me hace sentir elegante y sofisticado.',
-				'El sonido de las olas rompiendo en la playa es relajante y tranquilizador.',
-			].join(' ')
-		);
-	}, []);
+		setTestText(textData.join(' '));
+	}, [textData]);
 
 	useEffect(() => {
 		const handleKeyUp = (event: KeyboardEvent) => {
