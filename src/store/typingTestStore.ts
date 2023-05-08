@@ -39,7 +39,8 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
                     ...state,
                     testText: text,
                     words: testWords,
-                    letters: testLetters
+                    letters: testLetters,
+                    letterIdx: 0
                 }
             })
         },
