@@ -4,7 +4,7 @@ import { useTypingTestStore } from './store/typingTestStore';
 import { INVALID_KEYS } from './helpers/constants';
 import './App.css';
 import { OptionsBar } from './components/OptionsBar';
-import { useTestTextData } from './hooks/useWords';
+import { useTestTextData } from './hooks/useTestTextData';
 
 function App() {
 	const { setTestText, checkLetter, markAccent, deleteLetter } =
