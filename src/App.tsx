@@ -6,6 +6,21 @@ import './App.css';
 import { OptionsBar } from './components/OptionsBar';
 import { useTestTextData } from './hooks/useTestTextData';
 
+function setWordsContainerPosittion() {
+	const activeLetter = document.querySelector<HTMLElement>('.animate-cursor');
+	const words = document.querySelector<HTMLElement>('#words');
+
+	if (activeLetter == null || words == null) return;
+
+	const rect = activeLetter.getBoundingClientRect();
+
+	if (words.clientHeight - activeLetter.offsetTop <= rect.height * 2) return;
+	words.style.transform = `translateY(${
+		-activeLetter.offsetTop +
+		(activeLetter.offsetTop === 0 ? 0 : rect.height)
+	}px)`;
+}
+
 function App() {
 	const { setTestText, checkLetter, markAccent, deleteLetter } =
 		useTypingTestStore();
@@ -13,9 +28,11 @@ function App() {
 
 	useEffect(() => {
 		setTestText(textData.join(' '));
+		setWordsContainerPosittion();
 	}, [textData]);
 
 	useEffect(() => {
+		setWordsContainerPosittion();
 		const handleKeyUp = (event: KeyboardEvent) => {
 			if (INVALID_KEYS.includes(event.key)) return;
 
@@ -41,7 +58,7 @@ function App() {
 
 	return (
 		<div>
-			<main className="flex flex-col gap-6 py-7 justify-center items-center relative">
+			<main className="flex flex-col gap-10 py-7 justify-center items-center relative">
 				<OptionsBar />
 				<WordsContainer />
 			</main>

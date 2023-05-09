@@ -1,0 +1,28 @@
+#words-container {
+    padding-top: 2rem;
+    max-width: 60rem;
+    max-height: 12rem;
+}
+
+#words-container::before, #words-container::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+#words-container::before {
+    background: linear-gradient(to bottom, rgb(var(--backgroundPrimary)), transparent );
+    top: 0;
+    height: 2.2rem;
+}
+#words-container::after {
+    background: linear-gradient(to top, rgb(var(--backgroundPrimary)), transparent );
+    bottom: 0;
+    height: 1.4rem;
+}
+
+#words {
+    transition: transform 0.3s ease-in-out;
+}
