@@ -56,6 +56,19 @@ function App() {
 		};
 	});
 
+	useEffect(() => {
+		if (document.body == null) return;
+
+		const observer = new ResizeObserver(() => {
+			setWordsContainerPosittion();
+		});
+
+		observer.observe(document.body);
+		return () => {
+			observer.disconnect();
+		};
+	}, []);
+
 	return (
 		<div>
 			<main className="flex flex-col gap-10 py-7 justify-center items-center relative">
