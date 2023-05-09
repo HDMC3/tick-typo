@@ -13,6 +13,7 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
         testMode: TestMode.WORDS,
         testModeOption: TestModeOption.WORDS_25,
         setTestText: (text: string) => {
+            text += ' ';
             const testLetters: TestLetter[] = text.split('').map((char, i) => {
                 return {
                     char, 
