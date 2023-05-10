@@ -2,6 +2,7 @@
     padding-top: 2rem;
     max-width: 60rem;
     max-height: 12rem;
+    min-height: 10rem;
 }
 
 #words-container::before, #words-container::after {
