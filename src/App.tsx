@@ -14,7 +14,7 @@ function setWordsContainerPosittion() {
 
 	const rect = activeLetter.getBoundingClientRect();
 
-	if (words.clientHeight - activeLetter.offsetTop <= rect.height * 2) return;
+	if (words.clientHeight - activeLetter.offsetTop <= rect.height) return;
 	words.style.transform = `translateY(${
 		-activeLetter.offsetTop +
 		(activeLetter.offsetTop === 0 ? 0 : rect.height)
