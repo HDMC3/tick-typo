@@ -5,6 +5,8 @@ import { INVALID_KEYS } from './helpers/constants';
 import './App.css';
 import { OptionsBar } from './components/OptionsBar';
 import { useTestTextData } from './hooks/useTestTextData';
+import { TypingState } from './store/enums';
+import { useTestLogic } from './hooks/useTestLogic';
 
 function setWordsContainerPosittion() {
 	const activeLetter = document.querySelector<HTMLElement>('.animate-cursor');
@@ -22,8 +24,15 @@ function setWordsContainerPosittion() {
 }
 
 function App() {
-	const { setTestText, checkLetter, markAccent, deleteLetter } =
-		useTypingTestStore();
+	const {
+		letterIdx,
+		typingState,
+		setTestText,
+		checkLetter,
+		markAccent,
+		deleteLetter,
+		startTest,
+	} = useTypingTestStore();
 	const { textData } = useTestTextData();
 
 	useEffect(() => {
@@ -31,9 +40,13 @@ function App() {
 		setWordsContainerPosittion();
 	}, [textData]);
 
+	const { time, result } = useTestLogic();
+
 	useEffect(() => {
 		setWordsContainerPosittion();
 		const handleKeyUp = (event: KeyboardEvent) => {
+			if (typingState === TypingState.FINISHED) return;
+
 			if (INVALID_KEYS.includes(event.key)) return;
 
 			if (event.key === 'Backspace') {
@@ -44,6 +57,10 @@ function App() {
 			if (event.key === 'Dead') {
 				markAccent();
 				return;
+			}
+
+			if (letterIdx === 0 && typingState === TypingState.PENDING) {
+				startTest();
 			}
 
 			checkLetter(event.key);
@@ -74,6 +91,7 @@ function App() {
 			<main className="flex flex-col gap-10 py-7 justify-center items-center relative">
 				<OptionsBar />
 				<WordsContainer />
+				<pre>{JSON.stringify({ time, result }, null, 4)}</pre>
 			</main>
 		</div>
 	);

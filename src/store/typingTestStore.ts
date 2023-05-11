@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { type TypingTestState, type TestLetter } from "./types";
 import { VOWEL_TO_ACCENT } from "../helpers/constants";
-import { TestMode, TestModeOption } from "./enums";
+import { TestMode, TestModeOption, TypingState } from "./enums";
 
 export const useTypingTestStore = create<TypingTestState>((set) => {
     return {
@@ -12,6 +12,7 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
         words: [],
         testMode: TestMode.WORDS,
         testModeOption: TestModeOption.WORDS_25,
+        typingState: TypingState.PENDING,
         setTestText: (text: string) => {
             text += ' ';
             const testLetters: TestLetter[] = text.split('').map((char, i) => {
@@ -24,13 +25,10 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
             });
 
             let idx = 0;
-            const rawWords = text.split(' ');
-            const testWords = rawWords.map((word, i) => {
+            const rawWords = text.trim().split(' ');
+            const testWords = rawWords.map((word) => {
                 const end = idx + word.length;
-                const testWord = testLetters.slice(idx, end);
-                if (i < rawWords.length - 1) {
-                    testWord.push(testLetters[end])
-                }
+                const testWord = testLetters.slice(idx, end + 1);
                 idx = end + 1;
                 return testWord;
             })
@@ -40,8 +38,7 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
                     ...state,
                     testText: text,
                     words: testWords,
-                    letters: testLetters,
-                    letterIdx: 0
+                    letters: testLetters
                 }
             })
         },
@@ -119,6 +116,32 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
                     testModeOption: newTestModeOption
                 }
             });
+        },
+        startTest: () => {
+            set(state => {
+                return {
+                    ...state,
+                    typingState: TypingState.STARTED
+                }
+            })
+        },
+        endTest: () => {
+            set(state => {
+                return {
+                    ...state,
+                    letterIdx: state.testText.length,
+                    typingState: TypingState.FINISHED
+                }
+            })
+        },
+        restartTest: () => {
+            set(state => {
+                return {
+                    ...state,
+                    letterIdx: 0,
+                    typingState: TypingState.PENDING
+                }
+            })
         }
     }
 })

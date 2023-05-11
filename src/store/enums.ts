@@ -15,3 +15,9 @@ export enum TestModeOption {
     TIME_60,
     TIME_120,
 }
+
+export enum TypingState {
+    STARTED,
+    PENDING,
+    FINISHED
+}
