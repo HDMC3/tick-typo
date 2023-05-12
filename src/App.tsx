@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
 import { WordsContainer } from './components/WordsContainer';
 import { useTypingTestStore } from './store/typingTestStore';
-import { INVALID_KEYS } from './helpers/constants';
 import './App.css';
 import { OptionsBar } from './components/OptionsBar';
 import { useTestTextData } from './hooks/useTestTextData';
-import { TypingState } from './store/enums';
 import { useTestLogic } from './hooks/useTestLogic';
+import { useKeyboard } from './hooks/useKeyboard';
 
 function setWordsContainerPosittion() {
 	const activeLetter = document.querySelector<HTMLElement>('.animate-cursor');
@@ -24,54 +23,17 @@ function setWordsContainerPosittion() {
 }
 
 function App() {
-	const {
-		letterIdx,
-		typingState,
-		setTestText,
-		checkLetter,
-		markAccent,
-		deleteLetter,
-		startTest,
-	} = useTypingTestStore();
+	const { setTestText } = useTypingTestStore();
 	const { textData } = useTestTextData();
+	const { time, result } = useTestLogic();
+	const { errors, capsLockOn } = useKeyboard();
 
 	useEffect(() => {
 		setTestText(textData.join(' '));
-		setWordsContainerPosittion();
 	}, [textData]);
-
-	const { time, result, markError } = useTestLogic();
 
 	useEffect(() => {
 		setWordsContainerPosittion();
-		const handleKeyUp = (event: KeyboardEvent) => {
-			if (typingState === TypingState.FINISHED) return;
-
-			if (INVALID_KEYS.includes(event.key)) return;
-
-			if (event.key === 'Backspace') {
-				deleteLetter();
-				return;
-			}
-
-			if (event.key === 'Dead') {
-				markAccent();
-				return;
-			}
-
-			if (letterIdx === 0 && typingState === TypingState.PENDING) {
-				startTest();
-			}
-
-			checkLetter(event.key);
-			markError();
-		};
-
-		addEventListener('keyup', handleKeyUp);
-
-		return () => {
-			removeEventListener('keyup', handleKeyUp);
-		};
 	});
 
 	useEffect(() => {
@@ -92,7 +54,13 @@ function App() {
 			<main className="flex flex-col gap-10 py-7 justify-center items-center relative">
 				<OptionsBar />
 				<WordsContainer />
-				<pre>{JSON.stringify({ time, result }, null, 4)}</pre>
+				<pre>
+					{JSON.stringify(
+						{ time, errors, result, capsLockOn },
+						null,
+						4
+					)}
+				</pre>
 			</main>
 		</div>
 	);

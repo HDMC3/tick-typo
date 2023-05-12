@@ -6,7 +6,6 @@ interface TestResult {
     correctWords: number;
     incorrectChars: number;
     correctChars: number;
-    errors: number;
     wpm: number;
 }
 
@@ -14,7 +13,6 @@ const INITIAL_RESULT: TestResult = {
     correctWords: 0,
     incorrectChars: 0,
     correctChars: 0,
-    errors: 0,
     wpm: 0
 }
 
@@ -30,7 +28,6 @@ export const useTestLogic = () => {
     const [time, setTime] = useState(0);
     const [timer, setTimer] = useState<number | undefined>();
     const [result, setResult] = useState<TestResult>(INITIAL_RESULT);
-    const [errorsCount, setErrorsCount] = useState(0);
 
     const timerCallback = () => {
         setTime(currentTime => currentTime + 1);
@@ -63,17 +60,8 @@ export const useTestLogic = () => {
         }, 0);
 
         const wpm = correctWords / (time / 60);
-
-        return { correctWords, incorrectChars, correctChars, errors: errorsCount, wpm };
-    }
-
-    const markError = () => {
-        const checkedLetterIdx = letterIdx;
-        if (checkedLetterIdx < 0 || checkedLetterIdx > testText.length - 1) return;
-
-        if (letters[checkedLetterIdx].correct) return;
-
-        setErrorsCount(state => state + 1)
+        
+        return { correctWords, incorrectChars, correctChars, wpm };
     }
 
     useEffect(() => {
@@ -103,7 +91,7 @@ export const useTestLogic = () => {
 
         if (typingState === TypingState.PENDING) {
             clearTimer();
-            setErrorsCount(0);
+            setTime(0);
         }
 
         if (typingState === TypingState.FINISHED) {
@@ -116,13 +104,11 @@ export const useTestLogic = () => {
 
     useEffect(() => {
         restartTest();
-        setTime(0);
         setResult(INITIAL_RESULT);
     }, [testModeOption]);
 
     return {
         time,
-        result,
-        markError
+        result
     }
 }
