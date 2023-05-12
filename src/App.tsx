@@ -40,7 +40,7 @@ function App() {
 		setWordsContainerPosittion();
 	}, [textData]);
 
-	const { time, result } = useTestLogic();
+	const { time, result, markError } = useTestLogic();
 
 	useEffect(() => {
 		setWordsContainerPosittion();
@@ -64,6 +64,7 @@ function App() {
 			}
 
 			checkLetter(event.key);
+			markError();
 		};
 
 		addEventListener('keyup', handleKeyUp);
