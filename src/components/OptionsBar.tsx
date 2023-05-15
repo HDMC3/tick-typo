@@ -1,5 +1,6 @@
 import { TestMode, TestModeOption } from '../store/enums';
 import { useTypingTestStore } from '../store/typingTestStore';
+import { type MouseEvent } from 'react';
 
 interface TestModeButtonProps {
 	mode: TestMode;
@@ -7,9 +8,14 @@ interface TestModeButtonProps {
 }
 const TestModeButton = ({ mode, text }: TestModeButtonProps) => {
 	const { testMode, setTestMode } = useTypingTestStore();
+	const handleClick = (mode: TestMode, event: MouseEvent) => {
+		const btn = event.target as HTMLButtonElement;
+		btn.blur();
+		setTestMode(mode);
+	};
 	return (
 		<button
-			onClick={() => setTestMode(mode)}
+			onClick={e => handleClick(mode, e)}
 			className={`btn btn-sm btn-solid-success ${
 				testMode === mode ? 'underline font-bold' : ''
 			}`}
@@ -25,9 +31,14 @@ interface TestModeOptionButtonProps {
 }
 const TestModeOptionButton = ({ mode, text }: TestModeOptionButtonProps) => {
 	const { testModeOption, setTestModeOption } = useTypingTestStore();
+	const handleClick = (mode: TestModeOption, event: MouseEvent) => {
+		const btn = event.target as HTMLButtonElement;
+		btn.blur();
+		setTestModeOption(mode);
+	};
 	return (
 		<button
-			onClick={() => setTestModeOption(mode)}
+			onClick={e => handleClick(mode, e)}
 			className={`btn btn-sm btn-solid-warning ${
 				testModeOption === mode ? 'underline font-bold' : ''
 			}`}
