@@ -51,6 +51,12 @@ export const useKeyboard = () => {
 		};
 	});
 
+    useEffect(() => {
+        if (typingState === TypingState.PENDING) {
+            setErrorsCount(0);
+        }
+    }, [typingState])
+
     return {
         activeLetter: letters[letterIdx],
         errors: errorsCount,
