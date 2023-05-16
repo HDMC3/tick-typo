@@ -1,11 +1,11 @@
 #words-container {
-    padding-top: 2rem;
+    /* padding-top: 2rem; */
     max-width: 60rem;
-    max-height: 12rem;
-    min-height: 10rem;
+    max-height: 8rem;
+    min-height: 8rem;
 }
 
-#words-container::before, #words-container::after {
+#words-container::after {
     content: "";
     position: absolute;
     left: 0;

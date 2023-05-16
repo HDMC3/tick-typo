@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { TestMode, TestModeOption } from '../store/enums';
+import { TestMode, TestModeOption, TypingState } from '../store/enums';
 import { useTypingTestStore } from '../store/typingTestStore';
 
 export const PARAM_BY_TEST_MODE_OPTION: Record<TestModeOption, number> = {
@@ -17,7 +17,7 @@ export const PARAM_BY_TEST_MODE_OPTION: Record<TestModeOption, number> = {
 const BASE_URL = 'https://moranh56.npkn.net/random-data';
 
 export const useTestTextData = () => {
-    const { testMode, testModeOption } = useTypingTestStore();
+    const { testMode, testModeOption, typingState } = useTypingTestStore();
     const [ textData, setTextData ] = useState([]);
 
     const getTestTextData = async() => {
@@ -31,6 +31,12 @@ export const useTestTextData = () => {
     useEffect(() => {
         void getTestTextData();
     }, [testModeOption]);
+
+    useEffect(() => {
+        if (textData.length !== 0 && typingState === TypingState.PENDING) {
+            void getTestTextData();
+        }
+    }, [typingState])
 
     return {
         textData

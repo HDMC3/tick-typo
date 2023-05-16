@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, type MouseEvent } from 'react';
 import { WordsContainer } from './components/WordsContainer';
 import { useTypingTestStore } from './store/typingTestStore';
 import './App.css';
@@ -34,10 +34,17 @@ function timeToSeconds(time: number) {
 }
 
 function App() {
-	const { setTestText, typingState, testMode } = useTypingTestStore();
+	const { setTestText, restartTest, typingState, testMode } =
+		useTypingTestStore();
 	const { textData } = useTestTextData();
 	const { time } = useTestLogic();
 	const { capsLockOn } = useKeyboard();
+
+	const handleRestart = (event: MouseEvent) => {
+		const btn = event.target as HTMLButtonElement;
+		btn.blur();
+		restartTest();
+	};
 
 	useEffect(() => {
 		setTestText(textData.join(' '));
@@ -64,24 +71,42 @@ function App() {
 		<div>
 			<main className="flex flex-col gap-10 py-7 justify-center items-center relative">
 				<OptionsBar />
-				<div className="flex items-center flex-col gap-8">
+				<div className="flex items-center flex-col">
+					<div className="pb-4">
+						<span
+							className={`badge badge-xl px-5 py-5 badge-outline-error gap-4 rounded-md ${
+								!capsLockOn ? 'invisible' : ''
+							}`}
+						>
+							<span className={`dot dot-error`}></span>
+							Caps Lock
+						</span>
+					</div>
+
 					<WordsContainer />
-					{testMode === TestMode.TIME ? (
-						<div className="w-11/12" style={{ maxWidth: '60rem' }}>
-							<kbd className="kbd text-lg">
-								{timeToMinutes(time)}:{timeToSeconds(time)}
-							</kbd>
-						</div>
-					) : null}
-				</div>
-				{typingState === TypingState.STARTED && capsLockOn ? (
-					<span
-						className={`badge badge-xl px-5 py-5 badge-outline-error gap-4 rounded-md`}
+
+					<div
+						className="w-11/12 pt-4 flex justify-between"
+						style={{ maxWidth: '60rem' }}
 					>
-						<span className={`dot dot-error`}></span>
-						Caps Lock
-					</span>
-				) : null}
+						<kbd
+							className={`kbd text-lg ${
+								testMode !== TestMode.TIME ? 'invisible' : ''
+							}`}
+						>
+							{timeToMinutes(time)}:{timeToSeconds(time)}
+						</kbd>
+
+						{typingState === TypingState.STARTED ? (
+							<button
+								onClick={e => handleRestart(e)}
+								className={`btn btn-solid-primary font-bold flex-wrap`}
+							>
+								Reiniciar
+							</button>
+						) : null}
+					</div>
+				</div>
 			</main>
 		</div>
 	);
