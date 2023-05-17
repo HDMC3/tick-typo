@@ -49,7 +49,7 @@ export const useKeyboard = () => {
 		return () => {
 			removeEventListener('keyup', handleKeyUp);
 		};
-	});
+	}, []);
 
     useEffect(() => {
         if (typingState === TypingState.PENDING) {
