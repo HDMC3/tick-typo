@@ -2,6 +2,14 @@ import { create } from "zustand";
 import { type TypingTestState, type TestLetter } from "./types";
 import { VOWEL_TO_ACCENT } from "../helpers/constants";
 import { TestMode, TestModeOption, TypingState } from "./enums";
+import { type TestResult } from "./types/test-result";
+
+const INITIAL_RESULT: TestResult = {
+    correctWords: 0,
+    incorrectChars: 0,
+    correctChars: 0,
+    wpm: 0,
+}
 
 export const useTypingTestStore = create<TypingTestState>((set) => {
     return {
@@ -13,6 +21,9 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
         testMode: TestMode.WORDS,
         testModeOption: TestModeOption.WORDS_25,
         typingState: TypingState.PENDING,
+        testResult: INITIAL_RESULT,
+        time: 0,
+        errors: 0,
         setTestText: (text: string) => {
             text += ' ';
             const testLetters: TestLetter[] = text.split('').map((char, i) => {
@@ -52,7 +63,8 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
                     typedChar = VOWEL_TO_ACCENT[typedChar];
                 }
 
-                currentLetter.correct = currentLetter.char === typedChar;
+                const isCorrect = currentLetter.char === typedChar;
+                currentLetter.correct = isCorrect;
                 currentLetter.evaluated = true;
                 currentLetter.active = false;
 
@@ -63,6 +75,7 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
                     ...state,
                     letters: state.letters,
                     letterIdx: newLetterIdx,
+                    errors: isCorrect ? state.errors + 0 : state.errors + 1,
                     accentPressed: false
                 }
             })
@@ -121,14 +134,18 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
             set(state => {
                 return {
                     ...state,
+                    testResult: INITIAL_RESULT,
                     typingState: TypingState.STARTED
                 }
             })
         },
-        endTest: () => {
+        endTest: (result: TestResult) => {
             set(state => {
                 return {
                     ...state,
+                    testResult: {
+                        ...result,
+                    },
                     letterIdx: state.testText.length,
                     typingState: TypingState.FINISHED
                 }
@@ -139,9 +156,28 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
                 return {
                     ...state,
                     letterIdx: 0,
+                    testResult: INITIAL_RESULT,
                     typingState: TypingState.PENDING
                 }
             })
+        },
+        setTestTime(callback) {
+            set(state => {
+                const newTime = callback(state.time);
+                return {
+                    ...state,
+                    time: newTime
+                }
+            });
+        },
+        setTestErrors(callback) {
+            set(state => {
+                const newErrorsCount = callback(state.errors);
+                return {
+                    ...state,
+                    errors: newErrorsCount
+                }
+            });
         }
     }
 })

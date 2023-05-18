@@ -1,20 +1,8 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useTypingTestStore } from "../store/typingTestStore"
 import { TestMode, TestModeOption, TypingState } from "../store/enums";
+import { type TestResult } from "../store/types/test-result";
 
-interface TestResult {
-    correctWords: number;
-    incorrectChars: number;
-    correctChars: number;
-    wpm: number;
-}
-
-const INITIAL_RESULT: TestResult = {
-    correctWords: 0,
-    incorrectChars: 0,
-    correctChars: 0,
-    wpm: 0
-}
 
 const getTestDuration = (option: TestModeOption) => {
     return option === TestModeOption.TIME_30 ? 30 
@@ -24,24 +12,8 @@ const getTestDuration = (option: TestModeOption) => {
 }
 
 export const useTestLogic = () => {
-    const { testMode, testModeOption, letterIdx, testText, typingState, endTest, restartTest, words, letters } = useTypingTestStore();
-    const [time, setTime] = useState(0);
-    const [timer, setTimer] = useState<number | undefined>();
-    const [result, setResult] = useState<TestResult>(INITIAL_RESULT);
-
-    const timerCallback = () => {
-        setTime(currentTime => currentTime + 1);
-    }
-
-    const startTimer = () => {
-        setTime(0);
-        const interval = setInterval(timerCallback, 1000);
-        setTimer(interval);
-    }
-
-    const clearTimer = () => {
-        clearInterval(timer);
-    }
+    const { testMode, time, testModeOption, letterIdx, testText, typingState, endTest, restartTest, words, letters } = useTypingTestStore();
+    // const [result, setResult] = useState<TestResult>(INITIAL_RESULT);
 
     const calculateResult = (): TestResult => {
         const correctWords = words.reduce((count, word) => {
@@ -61,14 +33,20 @@ export const useTestLogic = () => {
 
         const wpm = correctWords / (time / 60);
         
-        return { correctWords, incorrectChars, correctChars, wpm };
+        return {
+            correctWords,
+            incorrectChars,
+            correctChars,
+            wpm
+        };
     }
 
     useEffect(() => {
         if (typingState !== TypingState.STARTED) return;
 
         if (letterIdx > testText.length - 1) {
-            endTest();
+            const result = calculateResult();
+            endTest(result);
         }
     }, [letterIdx]);
 
@@ -79,36 +57,27 @@ export const useTestLogic = () => {
         
         const testDuration = getTestDuration(testModeOption);
         if (time >= testDuration) {
-            endTest();
+            const result = calculateResult();
+            endTest(result);
         }
     }, [time]);
 
-    useEffect(() => {
-        if (typingState === TypingState.STARTED) {
-            startTimer();
-            setResult(INITIAL_RESULT)       
-        }
+    // useEffect(() => {
+    //     if (typingState === TypingState.STARTED) {
+                
+    //     }
 
-        if (typingState === TypingState.PENDING) {
-            clearTimer();
-            setTime(0);
-        }
+    //     if (typingState === TypingState.PENDING) {
+            
+    //     }
 
-        if (typingState === TypingState.FINISHED) {
-            clearTimer();
-            setResult(
-                calculateResult()
-            );
-        }
-    }, [typingState])
+    //     if (typingState === TypingState.FINISHED) {
+            
+    //     }
+    // }, [typingState])
 
     useEffect(() => {
         restartTest();
-        setResult(INITIAL_RESULT);
+        // setResult(INITIAL_RESULT);
     }, [testModeOption]);
-
-    return {
-        time,
-        result
-    }
 }

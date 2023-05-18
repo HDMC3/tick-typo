@@ -10,11 +10,13 @@ import { setWordsContainerPosittion } from './helpers/ui';
 import { CapsIndicator } from './components/CapsIndicator';
 import { TestTimer } from './components/TestTimer';
 import { useKeyboard } from './hooks/useKeyboard';
+import { useTimer } from './hooks/useTimer';
 
 function App() {
 	const { restartTest, typingState } = useTypingTestStore();
-	const { time } = useTestLogic();
 	const { capsLockOn } = useKeyboard();
+	const { time } = useTimer();
+	useTestLogic();
 	useTestTextData();
 
 	const restartHandler = (event: MouseEvent) => {

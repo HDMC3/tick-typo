@@ -4,19 +4,10 @@ import { TypingState } from "../store/enums";
 import { INVALID_KEYS } from "../helpers/constants";
 
 export const useKeyboard = () => {
-    const { letters, letterIdx, typingState, testText, deleteLetter, markAccent, startTest, checkLetter } = useTypingTestStore();
-    const [errorsCount, setErrorsCount] = useState(0);
+    const { letters, letterIdx, typingState, deleteLetter, markAccent, startTest, checkLetter, setTestErrors } = useTypingTestStore();
     const [capsLockOn, setCapsLockOn] = useState(false);
 
-    const markError = () => {
-        const checkedLetterIdx = letterIdx;
-        if (checkedLetterIdx < 0 || checkedLetterIdx > testText.length - 1) return;
-
-        if (letters[checkedLetterIdx].correct) return;
-        
-        setErrorsCount(state => state + 1)
-    }
-
+    
     useEffect(() => {
 		const handleKeyUp = (event: KeyboardEvent) => {
             const capsLockState = event.getModifierState('CapsLock');
@@ -41,7 +32,6 @@ export const useKeyboard = () => {
 			}
 
 			checkLetter(event.key);
-			markError();
 		};
 
 		addEventListener('keyup', handleKeyUp);
@@ -53,13 +43,12 @@ export const useKeyboard = () => {
 
     useEffect(() => {
         if (typingState === TypingState.PENDING) {
-            setErrorsCount(0);
+            setTestErrors(_ => 0);
         }
     }, [typingState])
 
     return {
         activeLetter: letters[letterIdx],
-        errors: errorsCount,
         capsLockOn
     }
 }
