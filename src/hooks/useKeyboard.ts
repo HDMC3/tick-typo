@@ -40,7 +40,7 @@ export const useKeyboard = () => {
 		return () => {
 			removeEventListener('keyup', handleKeyUp);
 		};
-	});
+	}, [letterIdx, typingState]);
 
     useEffect(() => {
         if (typingState === TypingState.STARTED) {
