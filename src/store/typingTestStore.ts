@@ -156,7 +156,6 @@ export const useTypingTestStore = create<TypingTestState>((set) => {
                 return {
                     ...state,
                     letterIdx: 0,
-                    testResult: INITIAL_RESULT,
                     typingState: TypingState.PENDING
                 }
             })

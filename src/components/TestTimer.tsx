@@ -1,5 +1,5 @@
-import { timeToMinutes, timeToSeconds } from '../helpers/ui';
-import { TestMode } from '../store/enums';
+import { timeToTimerFormat } from '../helpers/ui';
+import { TestMode, TypingState } from '../store/enums';
 import { useTypingTestStore } from '../store/typingTestStore';
 
 interface Props {
@@ -7,7 +7,7 @@ interface Props {
 }
 
 export const TestTimer = ({ time }: Props) => {
-	const { testMode } = useTypingTestStore();
+	const { testMode, typingState } = useTypingTestStore();
 
 	return (
 		<kbd
@@ -15,7 +15,7 @@ export const TestTimer = ({ time }: Props) => {
 				testMode !== TestMode.TIME ? 'invisible' : ''
 			}`}
 		>
-			{timeToMinutes(time)}:{timeToSeconds(time)}
+			{timeToTimerFormat(typingState === TypingState.PENDING ? 0 : time)}
 		</kbd>
 	);
 };

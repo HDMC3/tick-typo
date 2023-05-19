@@ -13,12 +13,16 @@ export function setWordsContainerPosittion() {
 	}px)`;
 }
 
-export function timeToMinutes(time: number) {
+function timeToMinutes(time: number) {
 	const minutes = Math.floor(time / 60);
 	return minutes < 10 ? `0${minutes}` : minutes;
 }
 
-export function timeToSeconds(time: number) {
+function timeToSeconds(time: number) {
 	const seconds = Math.round(time % 60);
 	return seconds < 10 ? `0${seconds}` : seconds;
+}
+
+export function timeToTimerFormat(time: number) {
+    return `${timeToMinutes(time)}:${timeToSeconds(time)}`;
 }

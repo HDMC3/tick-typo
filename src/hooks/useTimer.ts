@@ -27,7 +27,6 @@ export const useTimer = () => {
 
         if (typingState === TypingState.PENDING) {
             clearTimer();
-            setTestTime(_ => 0);
         }
 
         if (typingState === TypingState.FINISHED) {

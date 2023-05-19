@@ -10,6 +10,7 @@ import { setWordsContainerPosittion } from './helpers/ui';
 import { CapsIndicator } from './components/CapsIndicator';
 import { TestTimer } from './components/TestTimer';
 import { useKeyboard } from './hooks/useKeyboard';
+import { ResultsModal } from './components/ResultsModal';
 import { useTimer } from './hooks/useTimer';
 
 function App() {
@@ -68,6 +69,8 @@ function App() {
 					</button>
 				</div>
 			</div>
+
+			<ResultsModal show={typingState === TypingState.FINISHED} />
 		</main>
 	);
 }

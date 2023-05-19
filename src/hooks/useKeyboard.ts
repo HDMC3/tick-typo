@@ -7,7 +7,6 @@ export const useKeyboard = () => {
     const { letters, letterIdx, typingState, deleteLetter, markAccent, startTest, checkLetter, setTestErrors } = useTypingTestStore();
     const [capsLockOn, setCapsLockOn] = useState(false);
 
-    
     useEffect(() => {
 		const handleKeyUp = (event: KeyboardEvent) => {
             const capsLockState = event.getModifierState('CapsLock');
@@ -29,6 +28,8 @@ export const useKeyboard = () => {
 
 			if (letterIdx === 0 && typingState === TypingState.PENDING) {
 				startTest();
+                checkLetter(event.key);
+                return;
 			}
 
 			checkLetter(event.key);
@@ -39,10 +40,10 @@ export const useKeyboard = () => {
 		return () => {
 			removeEventListener('keyup', handleKeyUp);
 		};
-	}, []);
+	});
 
     useEffect(() => {
-        if (typingState === TypingState.PENDING) {
+        if (typingState === TypingState.STARTED) {
             setTestErrors(_ => 0);
         }
     }, [typingState])

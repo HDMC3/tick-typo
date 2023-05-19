@@ -17,7 +17,7 @@ export const useTestLogic = () => {
 
     const calculateResult = (): TestResult => {
         const correctWords = words.reduce((count, word) => {
-            count += word.every(l => l.correct || l.char === ' ') ? 1 : 0;
+            count += word.every(l => (l.evaluated && l.correct) || (!l.evaluated && l.char === ' ')) ? 1 : 0;
             return count;
         }, 0);
 
