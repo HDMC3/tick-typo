@@ -6,9 +6,9 @@ export const PARAM_BY_TEST_MODE_OPTION: Record<TestModeOption, number> = {
     [TestModeOption.WORDS_25]: 25,
     [TestModeOption.WORDS_50]: 50,
     [TestModeOption.WORDS_100]: 100,
-    [TestModeOption.TIME_30]: 300,
-    [TestModeOption.TIME_60]: 600,
-    [TestModeOption.TIME_120]: 1200,
+    [TestModeOption.TIME_30]: 175,
+    [TestModeOption.TIME_60]: 175,
+    [TestModeOption.TIME_120]: 175,
     [TestModeOption.TEXT_SHORT]: 3,
     [TestModeOption.TEXT_MEDIUM]: 7,
     [TestModeOption.TEXT_LONG]: 10
