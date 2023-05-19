@@ -44,6 +44,11 @@ export const useTestLogic = () => {
     useEffect(() => {
         if (typingState !== TypingState.STARTED) return;
 
+        if(letterIdx === testText.length - 1 && letters[letterIdx-1].correct) {
+            const result = calculateResult();
+            endTest(result);
+        }
+
         if (letterIdx > testText.length - 1) {
             const result = calculateResult();
             endTest(result);
