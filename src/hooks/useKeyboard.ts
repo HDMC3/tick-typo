@@ -6,11 +6,18 @@ import { INVALID_KEYS } from "../helpers/constants";
 export const useKeyboard = () => {
     const { letters, letterIdx, typingState, deleteLetter, markAccent, startTest, checkLetter, setTestErrors } = useTypingTestStore();
     const [capsLockOn, setCapsLockOn] = useState(false);
+    const [disable, setDisable] = useState(false);
+
+    const setDisableKeyboard = (value: boolean) => {
+        setDisable(value);
+    }
 
     useEffect(() => {
 		const handleKeyUp = (event: KeyboardEvent) => {
             const capsLockState = event.getModifierState('CapsLock');
             setCapsLockOn(capsLockState);
+
+            if (disable) return;
 
 			if (typingState === TypingState.FINISHED) return;
 
@@ -40,7 +47,7 @@ export const useKeyboard = () => {
 		return () => {
 			removeEventListener('keyup', handleKeyUp);
 		};
-	}, [letterIdx, typingState]);
+	}, [letterIdx, typingState, disable]);
 
     useEffect(() => {
         if (typingState === TypingState.STARTED) {
@@ -50,6 +57,7 @@ export const useKeyboard = () => {
 
     return {
         activeLetter: letters[letterIdx],
-        capsLockOn
+        capsLockOn,
+        setDisableKeyboard
     }
 }

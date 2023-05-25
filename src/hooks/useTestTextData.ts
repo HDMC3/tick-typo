@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { TestMode, TestModeOption, TypingState } from '../store/enums';
 import { useTypingTestStore } from '../store/typingTestStore';
 
@@ -17,15 +17,18 @@ export const PARAM_BY_TEST_MODE_OPTION: Record<TestModeOption, number> = {
 const BASE_URL = 'https://moranh56.npkn.net/random-data';
 
 export const useTestTextData = () => {
+    const [loading, setLoading] = useState(true);
     const { testMode, testModeOption, typingState, testText, setTestText } = useTypingTestStore();
 
     const getTestTextData = async() => {
+        setLoading(true);
         const urlResource = testMode === TestMode.TEXT ? 'quotes' : 'words';
         const url = `${BASE_URL}/${urlResource}/${PARAM_BY_TEST_MODE_OPTION[testModeOption]}`;
         const resp = await fetch(url);
         const data: string[] = await resp.json();
         const text = data.join(' ');
         setTestText(text);
+        setLoading(false);
     }
 
     useEffect(() => {
@@ -36,5 +39,9 @@ export const useTestTextData = () => {
         if (testText.length !== 0 && typingState === TypingState.PENDING) {
             void getTestTextData();
         }
-    }, [typingState])
+    }, [typingState]);
+
+    return {
+        loadingWords: loading
+    }
 }

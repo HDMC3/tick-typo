@@ -16,10 +16,10 @@ import { Navbar } from './components/Navbar';
 
 function App() {
 	const { restartTest, typingState } = useTypingTestStore();
-	const { capsLockOn } = useKeyboard();
+	const { loadingWords } = useTestTextData();
+	const { capsLockOn, setDisableKeyboard } = useKeyboard();
 	const { time } = useTimer();
 	useTestLogic();
-	useTestTextData();
 
 	const restartHandler = (event: MouseEvent) => {
 		const btn = event.target as HTMLButtonElement;
@@ -44,6 +44,10 @@ function App() {
 		};
 	}, []);
 
+	useEffect(() => {
+		setDisableKeyboard(loadingWords);
+	}, [loadingWords]);
+
 	return (
 		<>
 			<Navbar />
@@ -54,13 +58,19 @@ function App() {
 						<CapsIndicator active={capsLockOn} />
 					</div>
 
-					<WordsContainer />
+					{loadingWords ? (
+						<div className="flex items-center justify-center h-32">
+							<div className="spinner-circle spinner-xl [--spinner-color:var(--slate-8)]"></div>
+						</div>
+					) : (
+						<WordsContainer />
+					)}
 
 					<div
 						className="w-11/12 pt-4 flex justify-between"
 						style={{ maxWidth: '60rem' }}
 					>
-						<TestTimer time={time} />
+						{loadingWords ? null : <TestTimer time={time} />}
 
 						<button
 							onClick={e => restartHandler(e)}
