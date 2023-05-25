@@ -12,6 +12,7 @@ import { TestTimer } from './components/TestTimer';
 import { useKeyboard } from './hooks/useKeyboard';
 import { ResultsModal } from './components/ResultsModal';
 import { useTimer } from './hooks/useTimer';
+import { Navbar } from './components/Navbar';
 
 function App() {
 	const { restartTest, typingState } = useTypingTestStore();
@@ -44,34 +45,39 @@ function App() {
 	}, []);
 
 	return (
-		<main className="flex flex-col gap-10 py-7 justify-center items-center relative">
-			<OptionsBar />
-			<div className="flex items-center flex-col">
-				<div className="pb-4">
-					<CapsIndicator active={capsLockOn} />
-				</div>
+		<>
+			<Navbar />
+			<main className="flex flex-col gap-10 py-7 justify-center items-center relative">
+				<OptionsBar />
+				<div className="flex items-center flex-col">
+					<div className="pb-4">
+						<CapsIndicator active={capsLockOn} />
+					</div>
 
-				<WordsContainer />
+					<WordsContainer />
 
-				<div
-					className="w-11/12 pt-4 flex justify-between"
-					style={{ maxWidth: '60rem' }}
-				>
-					<TestTimer time={time} />
-
-					<button
-						onClick={e => restartHandler(e)}
-						className={`btn btn-solid-primary font-bold flex-wrap ${
-							typingState !== TypingState.STARTED ? 'hidden' : ''
-						}`}
+					<div
+						className="w-11/12 pt-4 flex justify-between"
+						style={{ maxWidth: '60rem' }}
 					>
-						Reiniciar
-					</button>
-				</div>
-			</div>
+						<TestTimer time={time} />
 
-			<ResultsModal show={typingState === TypingState.FINISHED} />
-		</main>
+						<button
+							onClick={e => restartHandler(e)}
+							className={`btn btn-solid-primary font-bold flex-wrap ${
+								typingState !== TypingState.STARTED
+									? 'hidden'
+									: ''
+							}`}
+						>
+							Reiniciar
+						</button>
+					</div>
+				</div>
+
+				<ResultsModal show={typingState === TypingState.FINISHED} />
+			</main>
+		</>
 	);
 }
 
