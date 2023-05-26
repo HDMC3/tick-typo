@@ -30,7 +30,7 @@ export const Navbar = () => {
 
 	return (
 		<nav
-			className="navbar navbar-no-boxShadow px-5"
+			className="navbar navbar-no-boxShadow px-5 pb-12 pt-5"
 			style={{ margin: '0 auto' }}
 		>
 			<div className="navbar-start">

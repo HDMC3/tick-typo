@@ -51,7 +51,7 @@ function App() {
 	return (
 		<>
 			<Navbar />
-			<main className="flex flex-col gap-10 py-7 justify-center items-center relative">
+			<main className="flex flex-col gap-10 py-7 px-4 justify-center items-center relative">
 				<OptionsBar />
 				<div className="flex items-center flex-col">
 					<div className="pb-4">

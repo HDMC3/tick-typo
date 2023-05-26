@@ -7,7 +7,7 @@ export const WordsContainer = () => {
 
 	return (
 		<div id="words-container" className="w-11/12 overflow-hidden relative">
-			<div id="words" className="relative flex flex-wrap ">
+			<div id="words" className="relative flex flex-wrap select-none">
 				{words.map((word, i) => {
 					return <Word key={i} testLetters={word} />;
 				})}
