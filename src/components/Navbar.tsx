@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import './Navbar.css';
+import { AboutModal } from './AboutModal';
 
 type ThemeMode = 'dark' | 'light' | 'system';
 
@@ -11,6 +12,12 @@ export const Navbar = () => {
 
 	const themeHandler = (value: ThemeMode) => {
 		setTheme(value);
+	};
+
+	const [showAbout, setShowAbout] = useState(false);
+
+	const closeAboutHandler = () => {
+		setShowAbout(false);
 	};
 
 	useEffect(() => {
@@ -33,7 +40,7 @@ export const Navbar = () => {
 			className="navbar navbar-no-boxShadow px-5 pb-12 pt-5"
 			style={{ margin: '0 auto' }}
 		>
-			<div className="navbar-start">
+			<div className="navbar-start gap-4 items-center">
 				<a className="navbar-item text-4xl font-bold">
 					<span>Tick</span>
 					<span>-</span>
@@ -42,7 +49,7 @@ export const Navbar = () => {
 					</span>
 				</a>
 			</div>
-			<div className="navbar-end">
+			<div className="navbar-end gap-4">
 				<div className="dropdown">
 					<button className="btn btn-ghost btn-circle ">
 						{/* Light */}
@@ -129,7 +136,33 @@ export const Navbar = () => {
 						</button>
 					</div>
 				</div>
+
+				<button
+					className="btn btn-circle btn-ghost"
+					onClick={() => setShowAbout(true)}
+				>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						className="icon icon-tabler icon-tabler-info-circle-filled"
+						width="44"
+						height="44"
+						viewBox="0 0 24 24"
+						strokeWidth="1.5"
+						stroke="currentColor"
+						fill="none"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+					>
+						<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+						<path
+							d="M12 2c5.523 0 10 4.477 10 10a10 10 0 0 1 -19.995 .324l-.005 -.324l.004 -.28c.148 -5.393 4.566 -9.72 9.996 -9.72zm0 9h-1l-.117 .007a1 1 0 0 0 0 1.986l.117 .007v3l.007 .117a1 1 0 0 0 .876 .876l.117 .007h1l.117 -.007a1 1 0 0 0 .876 -.876l.007 -.117l-.007 -.117a1 1 0 0 0 -.764 -.857l-.112 -.02l-.117 -.006v-3l-.007 -.117a1 1 0 0 0 -.876 -.876l-.117 -.007zm.01 -3l-.127 .007a1 1 0 0 0 0 1.986l.117 .007l.127 -.007a1 1 0 0 0 0 -1.986l-.117 -.007z"
+							strokeWidth="0"
+							fill="currentColor"
+						/>
+					</svg>
+				</button>
 			</div>
+			<AboutModal open={showAbout} onClose={closeAboutHandler} />
 		</nav>
 	);
 };
