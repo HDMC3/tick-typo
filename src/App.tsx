@@ -16,7 +16,7 @@ import { Navbar } from './components/Navbar';
 
 function App() {
 	const { restartTest, typingState } = useTypingTestStore();
-	const { loadingWords } = useTestTextData();
+	const { loadingWords, error, reload } = useTestTextData();
 	const { capsLockOn, setDisableKeyboard } = useKeyboard();
 	const { time } = useTimer();
 	useTestLogic();
@@ -45,8 +45,8 @@ function App() {
 	}, []);
 
 	useEffect(() => {
-		setDisableKeyboard(loadingWords);
-	}, [loadingWords]);
+		setDisableKeyboard(loadingWords || error);
+	}, [loadingWords, error]);
 
 	return (
 		<>
@@ -61,6 +61,24 @@ function App() {
 					{loadingWords ? (
 						<div className="flex items-center justify-center h-32">
 							<div className="spinner-circle spinner-xl [--spinner-color:var(--slate-8)]"></div>
+						</div>
+					) : error ? (
+						<div className="alert alert-error max-w-lg justify-center mt-10 p-8">
+							<div className="flex flex-col items-center">
+								<span className="text-center text-lg">
+									Problema al obtener texto
+								</span>
+								<span className="text-content2 text-center pt-2 pb-7">
+									Reinicia o recarga la pagina para intentar
+									nuevamente
+								</span>
+								<button
+									className="btn btn-error btn-sm"
+									onClick={() => reload()}
+								>
+									Reiniciar
+								</button>
+							</div>
 						</div>
 					) : (
 						<WordsContainer />
