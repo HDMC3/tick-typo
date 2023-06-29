@@ -14,7 +14,7 @@ export const PARAM_BY_TEST_MODE_OPTION: Record<TestModeOption, number> = {
     [TestModeOption.TEXT_LONG]: 10
 }
 
-const BASE_URL = 'https://moranh56.npkn.net/random-data';
+const BASE_URL: string = import.meta.env.VITE_NAPKIN_URL;
 
 export const useTestTextData = () => {
     const [loading, setLoading] = useState(true);
