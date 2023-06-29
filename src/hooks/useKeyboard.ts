@@ -23,11 +23,6 @@ export const useKeyboard = () => {
 
 			if (INVALID_KEYS.includes(event.key)) return;
 
-			if (event.key === 'Backspace') {
-				deleteLetter();
-				return;
-			}
-
 			if (event.key === 'Dead') {
 				markAccent();
 				return;
@@ -39,13 +34,29 @@ export const useKeyboard = () => {
                 return;
 			}
 
-			checkLetter(event.key);
+            if (event.key !== 'Backspace') {
+                checkLetter(event.key);
+            }
 		};
 
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (disable) return;
+
+			if (typingState === TypingState.FINISHED) return;
+
+			if (INVALID_KEYS.includes(event.key)) return;
+
+			if (event.key === 'Backspace') {
+				deleteLetter();
+			}
+        }
+
 		addEventListener('keyup', handleKeyUp);
+		addEventListener('keydown', handleKeyDown);
 
 		return () => {
 			removeEventListener('keyup', handleKeyUp);
+			removeEventListener('keydown', handleKeyDown);
 		};
 	}, [letterIdx, typingState, disable]);
 
